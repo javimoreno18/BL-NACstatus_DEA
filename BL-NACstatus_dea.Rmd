@@ -345,7 +345,7 @@ tab2 = data.frame(logFC = dea.o$log2FoldChange, negLogPval = -log10(dea.o$padj),
 lfc = 1
 pval = 0.05
 
-#pdf(file = 'Results/volcano_plot.pdf')
+pdf(file = 'Results/volcano_plot.pdf')
 par(mar = c(5, 4, 4, 4))
 plot(tab, pch = 16, cex = 0.6, xlab = expression(log[2]~fold~change), ylab = expression(-log[10]~pvalue))
 
@@ -358,11 +358,11 @@ mtext(paste("pval =", pval), side = 4, at = -log10(pval), cex = 0.8, line = 0.5,
 mtext(c(paste("-", lfc, "fold"), paste("+", lfc, "fold")), side = 3, at = c(-lfc, lfc), cex = 0.8, line = 0.5)
 
 with(subset(tab2, negLogPval > -log10(pval) & abs(logFC)>1), textxy(logFC, negLogPval, labs=Gene, cex=.4))
-#dev.off()
+dev.off()
 
 # Save significant genes into a file
 signGenes = (abs(tab$logFC) > lfc & tab$negLogPval > -log10(pval))
-#write.csv(tab2[which(signGenes),], file = "Results/signGenes.csv")
+write.csv(tab2[which(signGenes),], file = "Results/signGenes.csv")
 ```  
 
 #### Pathway Analysis
