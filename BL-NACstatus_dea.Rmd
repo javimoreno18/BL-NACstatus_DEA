@@ -1,6 +1,6 @@
 ---
 title: "BL-NACstatus_dea"
-author: "Javier Moreno Venegas"
+author: "Javier Moreno Venegas. Aurelio Moya García"
 date: "17/5/2019"
 output: html_document
 ---
@@ -52,7 +52,7 @@ rccDir <- file.path(DataDir, "RCCData")
 metadata <-  data.frame(fname = list.files(path = rccDir, pattern="*.RCC")) %>%
   tidyr::separate(fname,c("Sample.name","key1","key2",'other'),sep="_",remove = F) %>%
   tidyr::separate(other, c('subtype', 'ext'), sep = '\\.', remove = T) %>%
-  dplyr::filter((key1 == 0 | key1 == 1) & subtype == 'BL') %>%
+  dplyr::filter((key1 == 0 | key1 == 1) & subtype == 'BL') %>% #Ignore Key2 (pCR info)
   dplyr::select(fname, Sample.name, key1, subtype) 
   
 eset <- getRCCSet(metadata)
@@ -330,10 +330,12 @@ load(file = "Data/RData/BL-NAC_HKnormalised_counts.RData")
 
 design = ~ key1
 dea.o <- getDE(ncounts = round(ncounts), metadata = metadata, design = design)
-#write_csv(dea.o, "Results/BL-NAC-DEA.csv")
+write_csv(dea.o, "Results/BL-NAC-DEA.csv")
 dea.p <- dea.o %>% dplyr::filter(padj <0.05) %>% arrange(-log2FoldChange)
 View(dea.p)
 ```
+Off topic note: We don´t get many significant genes. However, the data in NAC-DEA.csv is important to analyse the FC of the genes in the linkcomms enriched in interesting functions, for the NAC-BL project. In that project we try to find the interactome expanded modules that are correlated the changes caused by NAC. Therefore, having an indication of the FC of some genes in these communities will inform us about the functions that are activated (genes upregulated) or inhibited (genes downregulated) because of NAC.
+
 
 We see the `r nrow(dea.p)` genes sorted by log2FC with significantly altered expression associated with NAC status. We can show the results of the differential expression analysis as a volcano plot. A volcano plot typically plots some measure of effect on the x-axis (typically the fold change) and the statistical significance on the y-axis (typically the -log10 of the p-value). Genes that are highly dysregulated are farther to the left and right sides, while highly significant changes appear higher on the plot.
 
@@ -368,7 +370,7 @@ signGenes = (abs(tab$logFC) > lfc & tab$negLogPval > -log10(pval))
 Here we use GSEA to perform pathway analysis on the list of genes. Gene Set Enrichment Analysis focuses on the changes of expression in groups of genes, and by doing so, this method resolves the problem of the undetectable, small changes in the expression of single genes [see wikipedia.](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis). 
 
 
-```{r eval=FALSE, message=F, warning=F, include=FALSE}
+```{r eval=TRUE, message=F, warning=F, include=FALSE}
 load(file = "Data/RData/BL-NAC_metadata.RData")
 load(file = "Data/RData/BL-NAC_HKnormalised_counts.RData")
 

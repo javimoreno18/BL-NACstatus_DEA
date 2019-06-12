@@ -6,7 +6,7 @@
 # Based on `https://github.com/hbc/clark-nanostring`, `https://rawgit.com/hbc/clark-nanostring/master/tumor-set/tumor-set.html#t-test`, `http://bioconductor.org/packages/devel/bioc/vignettes/NanoStringQCPro/inst/doc/vignetteNanoStringQCPro.pdf`
 
 ##### Libraries ######
-source("/Users/javi/Desktop/R-workspace/NAC_DEA/Code/0_loadlibraries.R")
+# source("/Users/javi/Desktop/R-workspace/NAC_DEA/Code/0_loadlibraries.R")0_loadlibraries.R is already loaded in the main script or .Rmd
 #source("/Users/aurelio/Library/Mobile Documents/com~apple~CloudDocs/sandbox/R-dev/myfunctions/basics.R")
 loadpkg("NanoStringQCPro")
 loadpkg("dplyr")

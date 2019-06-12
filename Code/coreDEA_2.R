@@ -6,7 +6,7 @@
 # Based on `https://github.com/hbc/clark-nanostring`, `https://rawgit.com/hbc/clark-nanostring/master/tumor-set/tumor-set.html#t-test`, `http://bioconductor.org/packages/devel/bioc/vignettes/NanoStringQCPro/inst/doc/vignetteNanoStringQCPro.pdf`
 
 ##### Libraries ######
-source("/Users/javi/Desktop/R-workspace/NAC_DEA/Code/0_loadlibraries.R")
+# source("/Users/javi/Desktop/R-workspace/NAC_DEA/Code/0_loadlibraries.R") 0_loadlibraries.R is already loaded in the main script or .Rmd
 #source("/Users/aurelio/Library/Mobile Documents/com~apple~CloudDocs/sandbox/R-dev/myfunctions/basics.R")
 loadpkg("NanoStringQCPro")
 loadpkg("dplyr")
@@ -59,6 +59,22 @@ plotFOV.key1 = function(eset, metadata, fov_threshold) {
     ylab("percentage of FOV counted") + xlab("Sample.name") +
     geom_hline(yintercept=fov_threshold, color="red") +
     labs(color="NAC status")
+}
+
+plotFOV.key2 = function(eset, metadata, fov_threshold) {
+  pdat = pData(eset) %>%
+    tibble::rownames_to_column() %>%
+    inner_join(metadata, by=c("rowname"="Sample.name"))
+  pdat$pcounted = pdat$FovCounted/pdat$FovCount * 100
+  ggplot(pdat, aes(rowname, pcounted, color=key2)) + geom_point() +
+      theme(axis.text.x=element_blank(),
+            axis.ticks.x=element_blank(),
+            strip.text.x=element_text(size=8)) +
+    scale_y_continuous(expand = c(0,0)) +
+    expand_limits(y = c(0,1.05 * max(pdat$pcounted))) +
+    ylab("percentage of FOV counted") + xlab("Sample.name") +
+    geom_hline(yintercept=fov_threshold, color="red") +
+    labs(color="pCR")
 }
 
 plotFOV.BMI = function(eset, metadata, fov_threshold) {
@@ -145,6 +161,22 @@ plotBD.key1 = function(eset, metadata, color_by) {
     geom_hline(yintercept=0.05, color="red") +
     geom_hline(yintercept=2.25, color="red") +
     labs(color="NAC status")
+}
+
+plotBD.key2 = function(eset, metadata, color_by) {
+  pdat = pData(eset) %>%
+    tibble::rownames_to_column() %>%
+    inner_join(metadata, by=c("rowname"="Sample.name"))
+  ggplot(pdat, aes(rowname, BindingDensity, color=key2)) + geom_point() +
+      theme(axis.text.x=element_blank(),
+            axis.ticks.x=element_blank(),
+            strip.text.x=element_text(size=8)) +
+    scale_y_continuous(expand = c(0,0)) +
+    expand_limits(y = c(0,1.05 * max(pdat$BindingDensity))) +
+    ylab("Binding density") + xlab("Sample.name") +
+    geom_hline(yintercept=0.05, color="red") +
+    geom_hline(yintercept=2.25, color="red") +
+    labs(color="pCR")
 }
 
 

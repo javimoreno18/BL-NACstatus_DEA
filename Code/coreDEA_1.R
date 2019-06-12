@@ -8,7 +8,7 @@
 
 
 ##### Libraries ######
-source("/Users/javi/Desktop/R-workspace/NAC_DEA/Code/0_loadlibraries.R")
+#source("/Users/javi/Desktop/R-workspace/NAC_DEA/Code/0_loadlibraries.R") 0_loadlibraries.R is already loaded in the main script or .Rmd
 #source("/Users/aurelio/Library/Mobile Documents/com~apple~CloudDocs/sandbox/R-dev/myfunctions/basics.R")
 loadpkg("NanoStringQCPro")
 loadpkg("dplyr")
